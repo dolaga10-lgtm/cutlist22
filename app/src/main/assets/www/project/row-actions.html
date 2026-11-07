@@ -1,0 +1,14 @@
+<div ng-click='grid.appScope.cellClicked(row, $event)' class='ui-grid-cell-contents' title="{{ 'OPTIONS' | translate }}" style="overflow: visible; text-align: center">
+    <i class="material-icons md-center md-24" style="color: #455A64; cursor: pointer">more_horiz</i>
+</div>
+<div ng-attr-id="{{ 'row-menu-' + row.entity.id }}" style="position: fixed; z-index: 1050">
+    <div class="ui-grid-menu ng-scope" ng-show='row.entity.$$menu'>
+        <ul id="contextMenu" class="dropdown-menu" role="menu" style="position: relative; display: block">
+            <li><a tabindex="-1" href="#" ng-click="grid.appScope.deleteProject(row.entity)">{{ 'DELETE' | translate }}</a></li>
+            <li><a tabindex="-1" href="#" ng-click="grid.appScope.toggleRename(row, $event)">{{ 'RENAME' | translate }}</a></li>
+<!--                <li><a tabindex="-1" href="#">Open</a></li>-->
+<!--                <li class="divider"></li>-->
+<!--                <li><a tabindex="-1" href="#">Separated link</a></li>-->
+        </ul>
+    </div>
+</div>

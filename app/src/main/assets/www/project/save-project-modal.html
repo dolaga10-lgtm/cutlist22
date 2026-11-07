@@ -1,0 +1,66 @@
+<div ng-controller="ProjectControler" class="modal fade" id="saveProjectModal" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="settingsModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #263238; color: white;">
+                <button type="button" class="close" data-dismiss="modal" style="color: white; opacity: 0.9;">&times;</button>
+                <h3 class="modal-title"><i class="material-icons md-center">save</i> {{ 'SAVE_PROJECT' | translate }}</h3>
+            </div>
+            <div class="modal-body">
+                <div ng-show="isLoading">
+                    <div class="dim-background"></div>
+                    <div class="centered-spinner"></div>
+                </div>
+                <form ng-submit="saveProject()">
+                    <div class="form-group">
+                        <label class="control-label"><strong>{{ 'SAVE_AS' | translate }} (اسم المشروع / العميل) *</strong></label>
+                        <input id="projectToSaveKey" class="form-control" placeholder="مثال: مطبخ أستاذ أحمد - المعادي" ng-model="projectToSaveKey" ng-keyup="$event.keyCode == 13 && saveProject()">
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-6">
+                            <div class="form-group">
+                                <label class="control-label">اسم العميل (Client Name)</label>
+                                <input class="form-control" placeholder="اسم العميل..." ng-model="clientMeta.clientName">
+                            </div>
+                        </div>
+                        <div class="col-xs-6">
+                            <div class="form-group">
+                                <label class="control-label">رقم الهاتف (Phone)</label>
+                                <input class="form-control" placeholder="رقم الهاتف..." ng-model="clientMeta.clientPhone">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label">ملاحظات المشروع (Notes / Material Details)</label>
+                        <input class="form-control" placeholder="مثال: 5 ألواح كونتر 18 مم + شريط PVC..." ng-model="clientMeta.notes">
+                    </div>
+                    <div class="checkbox">
+                        <label><input type="checkbox" ng-model="saveOptions.exportCopy"> حفظ نسخة كملف (يفتح مدير الملفات عشان تختار المكان)</label>
+                    </div>
+                </form>
+
+                <div ng-show="projectService.projects.length > 0" style="margin-top: 12px; max-height: 220px; overflow-y: auto; border: 1px solid #e0e0e0; border-radius: 4px;">
+                    <table class="table table-hover table-striped table-condensed" style="margin-bottom: 0;">
+                        <thead style="background: #eceff1;">
+                        <tr>
+                            <th style="width:55%; padding: 6px 10px;">المشروعات والعملاء المحفوظون على الجهاز (اضغط للاستبدال)</th>
+                            <th style="width:30%; padding: 6px;">العميل / الهاتف</th>
+                            <th style="width:15%; text-align: center; padding: 6px;">حذف</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr ng-repeat="project in projectService.projects track by $index" style="cursor: pointer">
+                            <td style="padding: 6px 10px; font-weight: bold; color: #1b365d;" ng-click="selectExistingProjectToSave(project)">{{project.name}}</td>
+                            <td style="padding: 6px; font-size: 12px; color: #455a64;" ng-click="selectExistingProjectToSave(project)">{{project.clientName || '-'}} <span ng-if="project.clientPhone">({{project.clientPhone}})</span></td>
+                            <td align="center" style="padding: 6px;"><span class="glyphicon glyphicon-trash text-danger" title="Delete" ng-click="deleteProject(project); $event.stopPropagation();"></span></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button style="min-width: 80px;" type="button" class="btn btn-default" data-dismiss="modal">{{ 'CANCEL' | translate }}</button>
+                <button style="min-width: 110px;" type="button" class="btn button-success" ng-click="saveProject()"><i class="material-icons md-18 md-center">check</i> {{ 'SAVE' | translate }}</button>
+            </div>
+        </div>
+    </div>
+</div>

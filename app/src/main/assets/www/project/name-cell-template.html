@@ -1,0 +1,12 @@
+<div class="ngCellText ui-grid-cell-contents">
+    <div ng-hide="row.entity.$$isBeingRenamed">
+        <a style="cursor: pointer" title="{{row.entity.name}}" ng-click="grid.appScope.rowClick(row)">{{COL_FIELD}}</a>
+    </div>
+    <div ng-show="row.entity.$$isBeingRenamed">
+        <input ng-attr-id="{{'new-name-' + row.entity.id }}"
+               ng-model="row.entity.$$newName"
+               ng-blur="grid.appScope.renameProject(row.entity.id)"
+               ng-keyup="$event.keyCode == 13 && grid.appScope.renameProject(row.entity)"
+               ng-click="$event.stopPropagation()" type="text"></input>
+    </div>
+</div>

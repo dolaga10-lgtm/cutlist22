@@ -1,0 +1,93 @@
+<style>
+    @media (min-width: 768px) {
+        .load-project-modal-dialog {
+            width: 75%;
+            min-width: 720px;
+            margin: 25px auto auto auto;
+        }
+    }
+</style>
+<div ng-controller="ProjectControler" ng-click="clearContextMenu()" class="modal fade" id="loadProjectModal" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="loadPanelsModalLabel" aria-hidden="true">
+    <div class="modal-dialog xs-fullscreen-modal-dialog load-project-modal-dialog" role="document">
+        <div class="modal-content xs-fullscreen-modal-content">
+            <div class="modal-header" style="background-color: #263238; color: white;">
+                <button type="button" class="close" data-dismiss="modal" style="color: white; opacity: 0.9;">&times;</button>
+                <h3 class="modal-title" id="loadPanelsModalLabel"><i class="material-icons md-center">folder_shared</i> {{ 'LOAD_PROJECT' | translate }} <small style="color: #a5d6a7;">(قاعدة بيانات الجهاز المحلية - مجانية بالكامل)</small></h3>
+            </div>
+            <div class="modal-body xs-fullscreen-modal-body" style="padding: 15px;">
+                <div style="display: flex; flex-wrap: wrap; gap: 8px; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+                    <div class="input-group" style="flex: 1; min-width: 240px;">
+                        <span class="input-group-addon"><span class="glyphicon glyphicon-search"></span></span>
+                        <input id="searchQuery" class="form-control" placeholder="{{ 'SEARCH' | translate }}" ng-model="searchQuery" ng-keyup="refreshFilter()">
+                    </div>
+                    <div style="display: flex; gap: 6px;">
+                        <button type="button" class="btn btn-sm button-default" ng-click="exportLocalDatabase()" title="حفظ نسخة احتياطية من كل المشروعات والعملاء كملف JSON">
+                            <i class="material-icons md-18 md-center">cloud_download</i> تصدير قاعدة البيانات (Backup)
+                        </button>
+                        <button type="button" class="btn btn-sm button-enabled" ng-click="triggerImportLocalDatabase()" title="استرجاع مشروعات وعملاء من ملف JSON">
+                            <i class="material-icons md-18 md-center">cloud_upload</i> استيراد قاعدة بيانات (Restore)
+                        </button>
+                        <input id="importLocalDbInput" type="file" accept=".json" style="display: none;" onchange="window.handleLocalDbImportFile(this)">
+                    </div>
+                </div>
+
+                <h4 ng-hide="projectService.projects.length > 0" style="text-align: center; color: grey; padding: 30px 0;">{{"NO_SAVED_DATA" | translate}}</h4>
+
+                <div ng-show="projectService.projects.length > 0" style="max-height: 55vh; overflow-y: auto; border: 1px solid #cfd8dc; border-radius: 4px;">
+                    <table class="table table-hover table-striped" style="margin-bottom: 0;">
+                        <thead style="background-color: #eceff1; color: #263238;">
+                            <tr>
+                                <th style="width: 38%; padding: 10px;">اسم المشروع / البيان (اضغط للفتح)</th>
+                                <th style="width: 22%; padding: 10px;">اسم العميل والهاتف</th>
+                                <th style="width: 18%; padding: 10px;">ملاحظات</th>
+                                <th style="width: 12%; padding: 10px;">آخر تعديل</th>
+                                <th style="width: 10%; text-align: center; padding: 10px;">إجراءات</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="proj in projectsGridOptions.data track by proj.id" style="vertical-align: middle;">
+                                <td style="padding: 8px 10px; cursor: pointer;" ng-click="!proj.$$isBeingRenamed && loadSavedProject(proj.id)">
+                                    <div ng-hide="proj.$$isBeingRenamed">
+                                        <strong style="color: #1565c0; font-size: 14px;"><i class="material-icons md-18 md-center" style="color: #2e7d32;">assignment</i> {{proj.name}}</strong>
+                                    </div>
+                                    <div ng-show="proj.$$isBeingRenamed" class="input-group input-group-sm" ng-click="$event.stopPropagation();">
+                                        <input ng-attr-id="{{'new-name-' + proj.id}}" type="text" class="form-control" ng-model="proj.$$newName" ng-keyup="$event.keyCode == 13 && renameProject(proj)">
+                                        <span class="input-group-btn">
+                                            <button class="btn btn-success" type="button" ng-click="renameProject(proj)">حفظ</button>
+                                        </span>
+                                    </div>
+                                </td>
+                                <td style="padding: 8px 10px; cursor: pointer;" ng-click="!proj.$$isBeingRenamed && loadSavedProject(proj.id)">
+                                    <span ng-if="proj.clientName"><strong>{{proj.clientName}}</strong></span>
+                                    <span ng-if="!proj.clientName" style="color: #999;">-</span>
+                                    <br ng-if="proj.clientPhone">
+                                    <small ng-if="proj.clientPhone" style="color: #546e7a;"><i class="glyphicon glyphicon-earphone"></i> {{proj.clientPhone}}</small>
+                                </td>
+                                <td style="padding: 8px 10px; font-size: 12px; color: #455a64; cursor: pointer;" ng-click="!proj.$$isBeingRenamed && loadSavedProject(proj.id)">
+                                    {{proj.notes || '-'}}
+                                </td>
+                                <td style="padding: 8px 10px; font-size: 12px; color: #607d8b;">
+                                    {{formatDate(proj.updated || proj.created, true)}}
+                                </td>
+                                <td style="padding: 8px 10px; text-align: center; white-space: nowrap;">
+                                    <button type="button" class="btn btn-xs btn-primary" title="فتح وتعديل المشروع" ng-click="loadSavedProject(proj.id)">
+                                        <i class="glyphicon glyphicon-folder-open"></i> فتح
+                                    </button>
+                                    <button type="button" class="btn btn-xs btn-default" title="تغيير الاسم (Rename)" ng-click="proj.$$oldName = proj.name; proj.$$newName = proj.name; proj.$$isBeingRenamed = !proj.$$isBeingRenamed; $event.stopPropagation();">
+                                        <i class="glyphicon glyphicon-pencil"></i>
+                                    </button>
+                                    <button type="button" class="btn btn-xs btn-danger" title="حذف المشروع" ng-click="deleteProject(proj); $event.stopPropagation();">
+                                        <i class="glyphicon glyphicon-trash"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer xs-fullscreen-modal-footer">
+                <button style="min-width: 90px;" type="button" class="btn btn-default" data-dismiss="modal">إغلاق (Close)</button>
+            </div>
+        </div>
+    </div>
+</div>
