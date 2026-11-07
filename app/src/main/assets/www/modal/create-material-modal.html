@@ -1,0 +1,21 @@
+<div class="modal fade" id="createMaterialModal" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="createMaterialModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">{{ 'CREATE_MATERIAL' | translate }}</h3>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="form-group">
+                        <label class="control-label">{{ 'NAME' | translate }}</label>
+                        <input id="newMaterialName" class="form-control" ng-model="$parent.editTile.material">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button style="min-width: 70px;" type="button" class="btn btn-default" data-dismiss="modal">{{ 'CANCEL' | translate }}</button>
+                <button style="min-width: 70px;" type="button" class="btn btn-primary" ng-click="createMaterial()">OK</button>
+            </div>
+        </div>
+    </div>
+</div>

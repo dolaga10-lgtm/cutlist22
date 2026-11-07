@@ -1,0 +1,25 @@
+<div ng-show="grid.appScope.isTileOptionsShown(row.entity)" style="font-size: 16px; text-align:center; white-space: nowrap;">
+
+    <button ng-show="grid.appScope.cfg.hasEdgeBanding" ng-click="grid.appScope.openEdgeDialog(row.entity)" class="btn-transparent" style="padding: 0 4px 0px 4px;" data-toggle="tooltip" data-placement="top" title="{{ 'EDGE_BANDING' | translate }}">
+        <span class="icon-stack" style="line-height: 0 !important; color: #607D8B; font-size: 17px; top: 3px;">
+           <i class="glyphicon icon-border-none icon-stack-1x"></i>
+           <i ng-if="row.entity.edge.top" class="glyphicon icon-border-top icon-stack-1x"></i>
+           <i ng-if="row.entity.edge.bottom" class="glyphicon icon-border-bottom icon-stack-1x"></i>
+           <i ng-if="row.entity.edge.left" class="glyphicon icon-border-left icon-stack-1x"></i>
+           <i ng-if="row.entity.edge.right" class="glyphicon icon-border-right icon-stack-1x"></i>
+        </span>
+        <span style="color: transparent !important" class="text-primary glyphicon glyphicon-menu-hamburger"></span>
+    </button>
+
+    <span ng-show="grid.appScope.cfg.considerOrientation == true">
+        <button ng-show="row.entity.orientation == 0" ng-click="grid.appScope.toggleOrientation(row.entity)" class="btn-transparent" style="padding: 0 0 0 0" ng-click="" data-toggle="tooltip" data-placement="top" title="{{ 'NO_GRAIN' | translate }}"><span class="text-primary glyphicon glyphicon-asterisk clo-blue"></span></button>
+        <button ng-show="row.entity.orientation == 1" ng-click="grid.appScope.toggleOrientation(row.entity)" class="btn-transparent" style="padding: 0 0 0 0" ng-click="" data-toggle="tooltip" data-placement="top" title="{{ 'HORIZONTAL_GRAIN' | translate }}"><span class="text-primary glyphicon glyphicon-resize-horizontal clo-blue"></span></button>
+        <button ng-show="row.entity.orientation == 2" ng-click="grid.appScope.toggleOrientation(row.entity)" class="btn-transparent" style="padding: 0 0 0 0" ng-click="" data-toggle="tooltip" data-placement="top" title="{{ 'VERTICAL_GRAIN' | translate }}"><span class="text-primary glyphicon glyphicon-resize-vertical clo-blue"></span></button>
+    </span>
+
+    <button ng-show="row.entity.enabled" class="btn-transparent" style="padding: 0 0 0 2px" ng-click="grid.appScope.toggleTile(row.entity)" data-toggle="tooltip" data-placement="top" title="{{ 'ENABLED' | translate }}"><span class="glyphicon glyphicon-check clo-green"/></button>
+    <button ng-hide="row.entity.enabled" class="btn-transparent" style="padding: 0 0 0 2px" ng-click="grid.appScope.toggleTile(row.entity)" data-toggle="tooltip" data-placement="top" title="{{ 'DISABLED' | translate }}"><span class="glyphicon glyphicon-unchecked clo-green"/></button>
+
+    <button class="btn-transparent" style="padding: 0 0 0 2px" ng-click="grid.appScope.removeTile(row.entity)" data-toggle="tooltip" data-placement="top" title="{{ 'REMOVE' | translate }}"><span style="padding-top: 2px" class="glyphicon glyphicon-remove clo-red"></span></button>
+
+</div>

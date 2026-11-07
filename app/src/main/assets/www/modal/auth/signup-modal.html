@@ -1,0 +1,60 @@
+<div ng-controller="LoginControler" class="modal fade" id="signupModal" tabindex="-1" role="dialog" aria-labelledby="signupModalLabel" aria-hidden="true">
+    <div class="modal-dialog auth-modal" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h3 class="modal-title" id="signupModalLabel">{{ 'SIGN_UP' | translate }}</h3>
+            </div>
+            <div class="modal-body">
+                <div ng-show="isLoading">
+                    <div class="dim-background"></div>
+                    <div class="centered-spinner"></div>
+                </div>
+                <div id="sign-up-message" ng-show="!!message" class="alert alert-danger">
+                    <button type="button" class="close" style="margin-top: -10px; margin-right: -8px;" onclick="$('.alert').hide()"><span>&times;</span></button>
+                    <span style="white-space: pre-wrap;" ng-bind="message"></span>
+                </div>
+                <div class="form-horizontal">
+                    <div class="form-group" style="margin-bottom: 15px;">
+                        <div class="col-xs-12">
+                            <div class="input-group">
+                                <span class="input-group-addon transparent"><span class="glyphicon glyphicon-user"></span></span>
+                                <input class="form-control left-border-none" placeholder="{{ 'EMAIL' | translate }}" type="text" name="username" ng-model="username" ng-model="password" ng-keyup="$event.keyCode == 13 && register()">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group" style="margin-bottom: 15px;">
+                        <div class="col-xs-12">
+                            <div class="input-group">
+                                <span class="input-group-addon transparent"><span class="glyphicon glyphicon-lock"></span></span>
+                                <input class="form-control left-border-none" placeholder="{{ 'PASSWORD' | translate }}" type="password" name="username" ng-model="password" ng-model="password" ng-keyup="$event.keyCode == 13 && register()">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group" style="margin-bottom: 0px;">
+                        <div class="col-xs-12">
+                            <div class="input-group">
+                                <span class="input-group-addon transparent"><span class="glyphicon glyphicon-check"></span></span>
+                                <input class="form-control left-border-none" placeholder="{{ 'CONFIRM_PASSWORD' | translate }}" type="password" name="username" ng-model="passwordConfirmation" ng-model="password" ng-keyup="$event.keyCode == 13 && register()">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <div style="text-align: center; padding: 16px"><small><a  href="terms-of-service.html" target="_blank">{{ 'TERMS_OF_SERVICE' | translate }}</a> | <a href="privacy-policy.html" target="_blank">{{ 'PRIVACY_POLICY' | translate }}</a></small></div>
+                    <button type="button" class="btn btn-primary" style="width: 100%" ng-click="register();">{{ 'SIGN_UP' | translate }}</button>
+                </div>
+                <div id="or">{{ 'OR' | translate }}</div>
+                <div style="text-align: center">
+                    <button ng-click="loginWithGoogle()" target="_self" type="button" class="btn btn-default" style="width: 100%"><img style="margin: -5px 5px; width: 20px" src="google-logo.svg">{{ 'SIGN_IN_GOOGLE' | translate }}</button>
+                </div>
+            </div>
+            <div class="modal-footer" style="text-align: center; padding: 10px;">
+                <small>
+                    <div>Already have an account? <a href="#" ng-href="{{cutListCfg.absUrl}}?action=signIn" target="_self" ng-click="$event.preventDefault();openSignIn();">{{ 'SIGN_IN' | translate }}</a></div>
+                    <div><a href="#" ng-href="{{cutListCfg.absUrl}}?action=resetPassword" ng-click="$event.preventDefault();openResetPassword();">{{ 'FORGOT_PASS' | translate }}</a></div>
+                </small>
+            </div>
+        </div>
+    </div>
+</div>

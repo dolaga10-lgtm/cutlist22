@@ -1,0 +1,49 @@
+<style>
+    @media (min-width: 768px) {
+        .export-img-modal-dialog {
+            max-width: 450px;
+        }
+    }
+    @media (max-width: 768px) {}
+</style>
+<div class="modal fade" id="exportImgModal" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="settingsModalLabel" aria-hidden="true">
+    <div class="modal-dialog export-img-modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h3 class="modal-title">{{ 'EXPORT_IMG' | translate }}</h3>
+            </div>
+            <div class="modal-body">
+                <div ng-show="isLoading">
+                    <div class="dim-background"></div>
+                    <div class="centered-spinner"></div>
+                </div>
+                <div id="save-project-message" ng-show="!!message" class="alert alert-danger">
+                    <button type="button" class="close" style="margin-top: -10px; margin-right: -8px;" onclick="$('.alert').hide()"><span>&times;</span></button>
+                    <span style="white-space: pre-wrap;" ng-bind="message"></span>
+                </div>
+                <form>
+                    <div class="form-group">
+                        <div class="form-horizontal">
+                            <div id="language-setting" class="form-group">
+                                <div class="col-xs-4">
+                                    <label class="control-label" style="padding-top: 6px">Filename</label>
+                                </div>
+                                <div class="col-xs-8">
+                                    <div class="input-group">
+                                        <input id="imgFileNameToDownload" class="form-control left-border-none" type="text" ng-model="$parent.fileNameToDownload" ng-keyup="$event.keyCode == 13 && exportToPdf()">
+                                        <span class="input-group-addon transparent">.jpeg</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button style="min-width: 70px;" type="button" class="btn btn-default" data-dismiss="modal">{{ 'CANCEL' | translate }}</button>
+                <button style="min-width: 70px;" type="button" class="btn btn-primary" ng-click="exportToImg()">OK</button>
+            </div>
+        </div>
+    </div>
+</div>

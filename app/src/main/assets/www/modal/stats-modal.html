@@ -1,0 +1,50 @@
+<style>
+    @media (min-width: 768px) {
+        .stats-modal {
+            width: 400px;
+            margin: 30px auto auto auto;
+        }
+    }
+</style>
+<div class="modal fade" id="statsModal" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="statsModalLabel" aria-hidden="true">
+    <div class="modal-dialog stats-modal" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h3 class="modal-title" id="statsModalLabel">{{ 'CLIENT_STATS' | translate }} <small>{{subscriptionService.getSubscriptionPlanLevelName()}}</small></h3>
+            </div>
+            <div class="modal-body">
+                <h4>Calculations executed</h4>
+                <div style="width: 90%; margin: auto">
+                    <table id="plan-comparison-table" class="table table-borderless table-striped">
+                        <tbody>
+                            <tr style="border-bottom: 1px solid lightgrey">
+                                <th style="width:70%; padding-left: 10px">Today</th>
+                                <td style="width:30%; padding-right: 10px" align="right" ng-bind="clientInfo.nbrExecutionsDay + (!isAndroid() && !isFull && subscriptionService.getExecutionThreshold() ? ' / '+ subscriptionService.getExecutionThreshold() : '')"></td>
+                            </tr>
+                            <tr style="border-bottom: 1px solid lightgrey">
+                                <th style="width:70%; padding-left: 10px">This week</th>
+                                <td style="width:30%; padding-right: 10px" align="right" ng-bind="clientInfo.nbrExecutionsWeek"></td>
+                            </tr>
+                            <tr style="border-bottom: 1px solid lightgrey">
+                                <th style="width:70%; padding-left: 10px">This month</th>
+                                <td style="width:30%; padding-right: 10px" align="right" ng-bind="clientInfo.nbrExecutionsMonth"></td>
+                            </tr>
+                            <tr style="border-bottom: 1px solid lightgrey">
+                                <th style="width:70%; padding-left: 10px">This year</th>
+                                <td style="width:30%; padding-right: 10px" align="right" ng-bind="clientInfo.nbrExecutionsYear"></td>
+                            </tr>
+                            <tr ng-show="!isAndroid() && clientInfo.ip && clientInfo.nbrCalculationsIpDay" style="border-bottom: 1px solid lightgrey">
+                                <th style="width:70%; padding-left: 10px">Today from IP {{clientInfo.ip}}</th>
+                                <td style="width:30%; padding-right: 10px" align="right" ng-bind="clientInfo.nbrCalculationsIpDay + (!isFull && subscriptionService.getExecutionThreshold() ? ' / '+ subscriptionService.getExecutionThreshold() : '')"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div ng-if="isAndroid() && !isFull && !clientInfo.hasActiveSubscription() && android.getNbrTotalCalculations() >= 0 && android.getWeekCalculationsThreshold() >= 0" style="padding-top: 10px; padding-bottom: 10px">
+                    <strong>Free weekly available calculations: <span ng-style="{ color: android.getWeekCalculationsThreshold() - android.getNbrWeekCalculations() < 1 ? 'red' : '' }">{{Math.max(android.getWeekCalculationsThreshold() - android.getNbrWeekCalculations(), 0)}}</span></strong><small> / {{android.getWeekCalculationsThreshold()}}</small>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

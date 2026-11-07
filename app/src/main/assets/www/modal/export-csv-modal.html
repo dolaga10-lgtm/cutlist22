@@ -1,0 +1,33 @@
+<div class="modal fade" id="exportCsvModal" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="settingsModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h3 class="modal-title">{{ 'EXPORT_CSV' | translate }}</h3>
+            </div>
+            <div class="modal-body">
+                <div ng-show="isLoading">
+                    <div class="dim-background"></div>
+                    <div class="centered-spinner"></div>
+                </div>
+                <div id="save-project-message" ng-show="!!message" class="alert alert-danger">
+                    <button type="button" class="close" style="margin-top: -10px; margin-right: -8px;" onclick="$('.alert').hide()"><span>&times;</span></button>
+                    <span style="white-space: pre-wrap;" ng-bind="message"></span>
+                </div>
+                <form>
+                    <div class="form-group">
+                        <label class="control-label">{{ 'SAVE_AS' | translate }}</label>
+                        <div class="input-group">
+                            <input id="csvFileNameToDownload" class="form-control left-border-none" type="text" name="username" ng-model="$parent.csvFileNameToDownload" ng-keyup="$event.keyCode == 13 && exportToCsv()">
+                            <span class="input-group-addon transparent">.csv</span>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button style="min-width: 70px;" type="button" class="btn btn-default" data-dismiss="modal">{{ 'CANCEL' | translate }}</button>
+                <button style="min-width: 70px;" type="button" class="btn btn-primary" ng-click="exportToCsv()">OK</button>
+            </div>
+        </div>
+    </div>
+</div>

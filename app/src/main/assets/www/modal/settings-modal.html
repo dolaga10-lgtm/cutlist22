@@ -1,0 +1,159 @@
+<div class="modal fade" id="settingsModal" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="settingsModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h3 class="modal-title" id="settingsModalLabel">{{ 'SETTINGS' | translate }}</h3>
+            </div>
+            <div class="modal-body">
+
+                <div class="form-horizontal">
+                    <div id="language-setting" class="form-group">
+                        <div class="col-xs-6">
+                            <label class="control-label" style="padding-top: 6px">{{ 'LANGUAGE' | translate }}</label>
+                        </div>
+                        <div class="col-xs-6">
+                            <select class="form-control" ng-options="option as option.label for option in languageList" ng-model="$parent.language" ng-change="onLanguageChanged()"></select>
+                        </div>
+                    </div>
+                    <div id="optimization-priority-setting" class="form-group">
+                        <div class="col-xs-6">
+                            <label class="control-label" style="padding-top: 6px">{{ 'OPTIMIZATION_PRIORITY' | translate }}</label>
+                            <div ng-if="!hasPremiumFeatures()" ng-click="validateSubscriptionFeature()" class="pro-only"><small>{{ 'PRO_FEATURE' | translate }}</small></div>
+                        </div>
+                        <div class="col-xs-6">
+                            <select class="form-control" ng-disabled="!hasPremiumFeatures()" ng-options="option.id as option.label for option in optimizationFactorPriority" ng-model="$parent.cfg.optimizationPriority"></select>
+                        </div>
+                    </div>
+                    <div id="cut-orientation-preference-setting" class="form-group">
+                        <div class="col-xs-6">
+                            <label class="control-label" style="padding-top: 6px">{{ 'CUT_ORIENTATION_PREFERENCE' | translate }}</label>
+                            <div ng-if="!hasPremiumFeatures()" ng-click="validateSubscriptionFeature()" class="pro-only"><small>{{ 'PRO_FEATURE' | translate }}</small></div>
+                        </div>
+                        <div class="col-xs-6">
+                            <select class="form-control" ng-disabled="!hasPremiumFeatures()" ng-options="option.id as option.label for option in cutOrientationPreferenceList" ng-model="$parent.cfg.cutOrientationPreference"></select>
+                        </div>
+                    </div>
+
+<!-- TODO -->
+<!--                    <div id="optimization-level-setting" class="form-group">-->
+<!--                        <div class="col-xs-6">-->
+<!--                            <label class="control-label" style="padding-top: 6px">{{ 'OPTIMIZATION_LEVEL' | translate }}</label>-->
+<!--                        </div>-->
+<!--                        <div class="col-xs-6">-->
+<!--                            <select class="form-control" ng-options="option.id as option.label for option in optimizationFactorList" ng-model="$parent.cfg.optimizationFactor">-->
+<!--                            </select>-->
+<!--                        </div>-->
+<!--                    </div>-->
+                    <div id="unit-setting" class="form-group">
+                        <div class="col-xs-6">
+                            <label class="control-label" style="padding-top: 6px">{{ 'UNITS' | translate }}</label>
+                        </div>
+                        <div class="col-xs-6">
+                            <select class="form-control" ng-options="option.id as option.label for option in unitsList" ng-model="$parent.cfg.units" ng-change="$parent.setupUnits()"></select>
+                        </div>
+                    </div>
+                    <div id="widht-1st-setting" class="form-group">
+                        <div class="col-xs-6">
+                            <label class="control-label" style="padding-top: 6px">{{ 'WIDTH_1ST' | translate }}</label>
+                        </div>
+                        <div class="col-xs-6">
+                            <select class="form-control" ng-options="option.id as option.label for option in cutDimensionsRepresentationList" ng-model="$parent.cfg.isWidthFirst"></select>
+                        </div>
+                    </div>
+                    <div id="decimal-places-setting" class="form-group">
+                        <div class="col-xs-6">
+                            <label class="control-label" style="padding-top: 6px">{{ 'DECIMAL_PLACES' | translate }}</label>
+                        </div>
+                        <div class="col-xs-6">
+                            <input type="number" class="form-control" ng-model="$parent.cfg.decimalPlaces">
+                        </div>
+                    </div>
+                    <div id="minimum-trim-setting" class="form-group">
+                        <div class="col-xs-6">
+                            <label class="control-label" style="padding-top: 6px">{{ 'MINIMUM_TRIM_DIMENSION' | translate }}</label>
+                        </div>
+                        <div class="col-xs-6">
+                            <input type="text" class="form-control" ng-model="$parent.cfg.minTrimDimension">
+                        </div>
+                    </div>
+<!--                    <div id="cut-thickness-setting" class="form-group">-->
+<!--                        <div class="col-xs-6">-->
+<!--                            <label class="control-label" style="padding-top: 6px">{{ 'CUT_THICKNESS' | translate }}</label>-->
+<!--                        </div>-->
+<!--                        <div class="col-xs-6">-->
+<!--                            <input type="text" class="form-control" ng-model="$parent.cfg.cutThicknessInput" ng-blur="$parent.cutThicknessInput()">-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                    <div id="group-equal-mosaics" class="form-group">-->
+<!--                        <div class="col-xs-9">-->
+<!--                            <label class="control-label" style="padding-top: 6px">{{ 'GROUP_EQUAL_MOSAICS' | translate }}</label>-->
+<!--                        </div>-->
+<!--                        <div class="col-xs-3">-->
+<!--                            <label class="switch" style="float: right;">-->
+<!--                                <input ng-model="$parent.cfg.stackEqualMosaicLayout" type="checkbox">-->
+<!--                                <div class="slider round"></div>-->
+<!--                            </label>-->
+<!--                        </div>-->
+<!--                    </div>-->
+
+                    <div id="group-equal-mosaics-setting" class="form-group">
+                        <div class="col-xs-6">
+                            <label class="control-label" style="padding-top: 6px">{{ 'GROUP_EQUAL_MOSAICS' | translate }}</label>
+                        </div>
+                        <div class="col-xs-6">
+                            <select class="form-control" ng-options="option.id as option.label for option in stackEqualMosaicsOptionsList" ng-model="$parent.cfg.stackEqualMosaicLayout"></select>
+                        </div>
+                    </div>
+
+
+                    <div ng-if="isAndroid()" id="force-server-side-calc" class="form-group">
+                        <div class="col-xs-9">
+                            <label class="control-label" style="padding-top: 6px">{{ 'FORCE_SERVER_SIDE_CALC' | translate }}</label>
+                            <div ng-if="!hasPremiumFeatures()" ng-click="showSubscriptionAlertAndModal()" class="pro-only"><small>Requires an active subscription plan</small></div>
+                        </div>
+                        <div class="col-xs-3">
+                            <label class="switch" style="float: right;" ng-click="!hasSubscription() && showSubscriptionAlertAndModal()">
+                                <input ng-disabled="!hasSubscription()" ng-model="$parent.cfg.forceServerSideCalc" type="checkbox">
+                                <div class="slider round"></div>
+                            </label>
+                        </div>
+                    </div>
+
+                </div>
+
+<!--                <div id="material-setting" ng-if='cutListCfg.isMaterialSupported' class="form-group form-inline" style="padding-top: 20px">-->
+<!--                    <label class="control-label">{{ 'CONSIDER_MATERIALS' | translate }}</label>-->
+<!--                    <label class="switch" style="float: right;">-->
+<!--                        <input ng-model="$parent.cfg.isMaterialEnabled" type="checkbox">-->
+<!--                        <div class="slider round"></div>-->
+<!--                    </label>-->
+<!--                </div>-->
+
+<!--                <div id="orientation-setting" ng-if='cutListCfg.isGrainDirectionSupported' class="form-group form-inline" style="padding-top: 20px">-->
+<!--                    <label class="control-label">{{ 'ORIENTATION_MATTERS' | translate }}</label>-->
+<!--                    ( <span class="text-primary glyphicon glyphicon-resize-horizontal" style="top: 0px"></span>-->
+<!--                    <span class="text-primary glyphicon glyphicon-resize-vertical" style="top: 0px"></span>)-->
+<!--                    <label class="switch" style="float: right;">-->
+<!--                        <input ng-model="$parent.cfg.considerOrientation" type="checkbox">-->
+<!--                        <div class="slider round"></div>-->
+<!--                    </label>-->
+<!--                </div>-->
+
+<!--                <div id="edge-banding-setting" ng-if='cutListCfg.isEdgeBandingSupported' class="form-group form-inline" style="padding-top: 20px">-->
+<!--                    <label class="control-label">{{ 'EDGE_BANDING' | translate }}</label>-->
+<!--                    ( <span class="text-primary glyphicon icon-border-none" style="top: 0px; font-size: 18px;"></span>-->
+<!--                    <span class="text-primary glyphicon icon-border-top-left" style="top: 0px; font-size: 18px;"></span> )-->
+<!--                    <label class="switch" style="float: right;">-->
+<!--                        <input ng-model="$parent.cfg.hasEdgeBanding" type="checkbox">-->
+<!--                        <div class="slider round"></div>-->
+<!--                    </label>-->
+<!--                </div>-->
+
+            </div>
+            <div class="modal-footer">
+                <button style="width: 70px;" type="button" class="btn btn-primary" data-dismiss="modal">Ok</button>
+            </div>
+        </div>
+    </div>
+</div>

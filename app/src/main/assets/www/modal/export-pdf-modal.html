@@ -1,0 +1,108 @@
+<style>
+    @media (min-width: 768px) {
+        .export-pdf-modal-dialog {
+            max-width: 450px;
+        }
+    }
+    @media (max-width: 768px) {}
+
+    .pro-only {
+        margin-top: -8px;
+        color: grey;
+        cursor: pointer;
+    }
+</style>
+<div ng-controller="PdfControler" class="modal fade" id="exportPdfModal" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="settingsModalLabel" aria-hidden="true">
+    <div class="modal-dialog export-pdf-modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h3 class="modal-title">{{ 'EXPORT_PDF' | translate }}</h3>
+            </div>
+            <div class="modal-body">
+                <div ng-show="isLoading">
+                    <div class="dim-background"></div>
+                    <div class="centered-spinner"></div>
+                </div>
+                <div id="save-project-message" ng-show="!!message" class="alert alert-danger">
+                    <button type="button" class="close" style="margin-top: -10px; margin-right: -8px;" onclick="$('.alert').hide()"><span>&times;</span></button>
+                    <span style="white-space: pre-wrap;" ng-bind="message"></span>
+                </div>
+                <form>
+                    <div class="form-group">
+                        <div class="form-horizontal">
+
+                            <div id="language-setting" class="form-group">
+                                <div class="col-xs-4">
+                                    <label class="control-label" style="padding-top: 6px">{{ 'FILENAME' | translate }}</label>
+                                </div>
+                                <div class="col-xs-8">
+                                    <div class="input-group">
+                                        <input id="pdfFileNameToDownload" class="form-control left-border-none" type="text" ng-model="$parent.$parent.fileNameToDownload" ng-keyup="$event.keyCode == 13 && exportToPdf()">
+                                        <span class="input-group-addon transparent">.pdf</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-xs-4">
+                                    <label class="control-label" style="padding-top: 6px">{{ 'FONT_SIZE' | translate }}</label>
+                                    <div ng-if="!hasPremiumFeatures()" ng-click="validateSubscriptionFeature()" class="pro-only"><small>{{ 'PRO_FEATURE' | translate }}</small></div>
+                                </div>
+                                <div class="col-xs-8">
+                                    <select ng-disabled="!hasPremiumFeatures()" class="form-control" ng-options="option as option.label for option in pdfFontList track by option.id" ng-model="pdfGenerator.cfg.font"></select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-xs-4">
+                                    <label class="control-label" style="padding-top: 6px">{{ 'PDF_HEADER_TEXT' | translate }}</label>
+                                    <div ng-if="!hasPremiumFeatures()" ng-click="validateSubscriptionFeature()" class="pro-only"><small>{{ 'PRO_FEATURE' | translate }}</small></div>
+                                </div>
+                                <div class="col-xs-8">
+                                    <input ng-disabled="!hasPremiumFeatures()" class="form-control input pull-right" style="" type="text" ng-model="pdfGenerator.cfg.headerText">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-xs-4">
+                                    <label class="control-label" style="padding-top: 6px">{{ 'PDF_ADDITIONAL_TEXT' | translate }}</label>
+                                    <div ng-if="!hasPremiumFeatures()" ng-click="validateSubscriptionFeature()" class="pro-only"><small>{{ 'PRO_FEATURE' | translate }}</small></div>
+                                </div>
+                                <div class="col-xs-8">
+                                    <textarea ng-disabled="!hasPremiumFeatures()" rows="3" class="form-control input pull-right" style="resize: none" type="text" ng-model="pdfGenerator.cfg.additionalText"></textarea>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group form-inline" style="padding-top: 8px">
+                            <label class="control-label">{{ 'PDF_SHOW_SUMMARY' | translate }}</label>
+                            <label class="switch" style="float: right;">
+                                <input ng-model="pdfGenerator.cfg.showSummary" type="checkbox">
+                                <div class="slider round"></div>
+                            </label>
+                        </div>
+                        <div class="form-group form-inline" style="padding-top: 20px">
+                            <label class="control-label">{{ 'PDF_SHOW_CUTS_TABLE' | translate }}</label>
+                            <label class="switch" style="float: right;">
+                                <input ng-model="pdfGenerator.cfg.showCutsTable" type="checkbox">
+                                <div class="slider round"></div>
+                            </label>
+                        </div>
+                        <div class="form-group form-inline" style="padding-top: 20px">
+                            <label class="control-label">{{ 'PDF_SHOW_DATE' | translate }}</label>
+                            <label class="switch" style="float: right;">
+                                <input ng-model="pdfGenerator.cfg.showDate" type="checkbox">
+                                <div class="slider round"></div>
+                            </label>
+                        </div>
+
+                    </div>
+
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button style="min-width: 70px;" type="button" class="btn btn-default" data-dismiss="modal">{{ 'CANCEL' | translate }}</button>
+                <button style="min-width: 70px;" type="button" class="btn btn-primary" ng-click="exportToPdf()">OK</button>
+            </div>
+        </div>
+    </div>
+</div>

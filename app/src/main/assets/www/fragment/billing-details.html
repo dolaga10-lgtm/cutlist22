@@ -1,0 +1,76 @@
+<div id="billing-details" ng-controller="BillingDetailsController" >
+
+    <div class="panel panel-default">
+        <div class="panel-heading">{{ 'BILLING_DETAILS' | translate }}</div>
+        <div class="panel-body">
+
+            <div class="form-horizontal" >
+
+                <div class="form-group">
+                    <div class="col-xs-6" style="top: 6px">
+                        <label class="control-label" style="padding-top: 0px; margin-top: 0px; display: inline-block;">{{ 'SHOULD_SEND_INVOICE' | translate }}</label>
+                        <label class="switch" style="display: block; top: 2px; left: -6px">
+                            <input ng-model="billingDetailsService.shouldSendInvoice" type="checkbox" ng-change="onBillingDetailsChange(); onShouldSendInvoiceChange();">
+                            <div class="slider round"></div>
+                        </label>
+                    </div>
+
+                    <div class="col-xs-6" ng-if="billingDetailsService.shouldSendInvoice">
+                        <label class="control-label" style="padding-top: 6px">{{ 'BILLING_EMAIL' | translate }}</label>
+                        <input type="text" class="form-control" ng-model="billingDetailsService.invoiceCustomerDetail.invoicingEmail" ng-change="onBillingDetailsChange()">
+                    </div>
+                </div>
+
+
+                <div ng-if="billingDetailsService.shouldSendInvoice">
+
+                    <div class="form-group">
+                        <div class="col-xs-6">
+                            <label class="control-label" style="padding-top: 6px">{{ 'COUNTRY' | translate }}</label>
+                            <select class="form-control" ng-options="option.id as option.label for option in countryListAlpha2" ng-model="billingDetailsService.invoiceCustomerDetail.countryCode" ng-change="validateVat()" ng-model-options="{ debounce: 500 }" ng-change="onBillingDetailsChange()"></select>
+                        </div>
+                        <div class="col-xs-6">
+                            <label class="control-label" style="padding-top: 6px">{{ 'VAT' | translate }}</label>
+                            <input type="text" class="form-control" ng-model="billingDetailsService.invoiceCustomerDetail.taxRegistrationNumber" ng-change="validateVat(); onBillingDetailsChange();" ng-model-options="{ debounce: 1000 }">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-xs-12">
+                            <label class="control-label" style="padding-top: 6px">{{ 'NAME' | translate }}</label>
+                            <input type="text" class="form-control" ng-model="billingDetailsService.invoiceCustomerDetail.businessName" ng-change="onBillingDetailsChange()">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-xs-12">
+                            <label class="control-label" style="padding-top: 6px">{{ 'ADDRESS' | translate }}</label>
+                            <input type="text" class="form-control" ng-model="billingDetailsService.invoiceCustomerDetail.address" ng-change="onBillingDetailsChange()">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-xs-6">
+                            <label class="control-label" style="padding-top: 6px">{{ 'ZIP_CODE' | translate }}</label>
+                            <input type="text" class="form-control" ng-model="billingDetailsService.invoiceCustomerDetail.postcode" ng-change="onBillingDetailsChange()">
+                        </div>
+                        <div class="col-xs-6">
+                            <label class="control-label" style="padding-top: 6px">{{ 'CITY' | translate }}</label>
+                            <input type="text" class="form-control" ng-model="billingDetailsService.invoiceCustomerDetail.city" ng-change="onBillingDetailsChange()">
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div ng-if="!billingDetailsService.shouldSendInvoice" style="margin-top: 20px">
+                <small>{{ 'PAYPAL_BILLING_DETAILS_MSG' | translate }}</small>
+            </div>
+
+            <div ng-if="clientInfo.hasActiveSubscription()" style="margin-top: 16px">
+                <button class="btn btn-clo pull-right" ng-disabled="!isDirty" ng-click="submitInvoiceCustomerDetail()">{{ 'SAVE' | translate }}</button>
+            </div>
+
+        </div>
+    </div>
+
+</div>

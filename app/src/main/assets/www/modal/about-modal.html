@@ -1,0 +1,40 @@
+<div class="modal fade" id="aboutModal" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="aboutModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h3 class="modal-title" id="aboutModalLabel">{{ 'TITLE' | translate }} <small>{{clientInfo.version}}</small><small ng-if="isFull"> Pro</small><small ng-if="clientInfo.hasActiveSubscription()"> {{subscriptionService.getSubscriptionPlanLevelName()}}</small></h3>
+            </div>
+            <div class="modal-body" style="line-height: 1.5; padding-top: 12px; padding-bottom: 0px;">
+                <div style="text-align:center; padding-bottom:12px;"><img src="mohamed.jpg" alt="" style="width:110px;height:110px;border-radius:50%;object-fit:cover;box-shadow:0 2px 8px rgba(0,0,0,.35);"><div style="font-weight:bold;margin-top:8px;">كات ليست محمد عادل</div></div>
+                <div style="text-align: justify;">{{ 'ABOUT_MSG_1' | translate }}</div>
+                <div ng-if="isAndroid()" style="padding-top: 20px;">
+                    <span>{{ 'TRY_WEB_MSG' | translate }}</span>
+                    <a href="https://www.cutlistoptimizer.com">www.cutlistoptimizer.com</a>
+                </div>
+                <div ng-if="isAndroid() && !isFull && !clientInfo.hasActiveSubscription()" style="padding-top: 20px; text-align: justify;">
+<!--                    <span>{{ 'ABOUT_MSG_2' | translate }}</span>-->
+                    <span>{{ 'ABOUT_MSG_3' | translate }}</span>
+                </div>
+                <div style="padding-top: 20px; padding-bottom: 10px">
+                    <span>{{ 'CONTACT_EMAIL' | translate }}</span>
+                    <a ng-if="clientInfo.hasActiveSubscription()" ng-href="mailto:support+{{subscriptionService.getSubscriptionPlanLevelName() | lowercase}}@cutlistoptimizer.com?subject=CutList Optimizer {{clientInfo.version + ' ' + subscriptionService.getSubscriptionPlanLevelName()}}">support@cutlistoptimizer.com</a>
+                    <a ng-if="!isAndroid() && !clientInfo.hasActiveSubscription()" ng-href="mailto:support@cutlistoptimizer.com?subject=CutList Optimizer {{clientInfo.version}}">support@cutlistoptimizer.com</a>
+                    <span ng-if="isAndroid() && !clientInfo.hasActiveSubscription()" style="color: grey;">support@cutlistoptimizer.com</span>
+                </div>
+                <div ng-if="isAndroid() && !isFull && !clientInfo.hasActiveSubscription() && android.getNbrTotalCalculations() >= 0 && android.getWeekCalculationsThreshold() >= 0" style="padding-top: 10px; padding-bottom: 10px">
+                    <strong>Free weekly available calculations: <span ng-style="{ color: android.getWeekCalculationsThreshold() - android.getNbrWeekCalculations() < 1 ? 'red' : '' }">{{Math.max(android.getWeekCalculationsThreshold() - android.getNbrWeekCalculations(), 0)}}</span></strong><small> / {{android.getWeekCalculationsThreshold()}}</small>
+                </div>
+                <!-- Google play badge -->
+                <div ng-cloak ng-if="!isAndroid()" id="google-play-badge" style="margin-left: -12px; margin-bottom: 8px">
+                    <a href='https://play.google.com/store/apps/details?id=com.cutlistoptimizer&pcampaignid=MKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1'>
+                        <img style="" height="70" alt='Get it on Google Play' src='google-play-badge.png'/>
+                    </a>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <div style="text-align: center"><small><a  href="terms-of-service.html" target="_blank">{{ 'TERMS_OF_SERVICE' | translate }}</a> | <a href="privacy-policy.html" target="_blank">{{ 'PRIVACY_POLICY' | translate }}</a></small></div>
+            </div>
+        </div>
+    </div>
+</div>

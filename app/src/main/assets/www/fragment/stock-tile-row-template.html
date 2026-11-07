@@ -1,0 +1,5 @@
+<div ng-mouseover="rowStyle={'background-color': '#C8E6C9'}; grid.appScope.drawService.highlightTiles(row.entity);" ng-mouseleave="rowStyle=null; grid.appScope.drawService.resetSvgOverlayElems()">
+    <div ng-style="!rowStyle && row.entity.isUsed ? {'background-color': '#dee4e7'} : (!rowStyle && row.entity.isInvalid ? {'background-color': '#ebccd1'} : rowStyle)" ng-repeat="(colRenderIndex, col) in colContainer.renderedColumns track by col.uid" ui-grid-one-bind-id-grid="rowRenderIndex + '-' + col.uid + '-cell'"
+         class="ui-grid-cell" ng-class="{ 'ui-grid-row-header-cell': col.isRowHeader }" role="{{col.isRowHeader ? 'rowheader' : 'gridcell'}}" ui-grid-cell>
+    </div>
+</div>

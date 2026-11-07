@@ -1,0 +1,245 @@
+<style>
+    .plan-header {
+        min-width: 70px;
+    }
+
+    .subscription-table-container {
+        /*height: 300px;*/
+        /*margin-bottom: -300px*/
+    }
+
+    @media (min-width: 768px) {
+        .subscription-table-container {
+            width: 75%;
+            font-size: 14px;
+            margin-left: 6%;
+        }
+
+        .features-header {
+            width: 40%;
+        }
+    }
+
+    @media (max-width: 768px) {
+        .subscription-table-container {
+            justify-content: center;
+        }
+
+        .subscription-table-container button {
+            padding: 6px 8px;
+        }
+
+        .features-header {
+            width: 20%;
+        }
+    }
+    
+    .check-mark {
+        font-size: 16px;
+    }
+
+    .cross-mark {
+        font-size: 16px;
+    }
+
+
+    .table-small > thead > tr > th,
+    .table-small > tbody > tr > th,
+    .table-small > tfoot > tr > th,
+    .table-small > thead > tr > td,
+    .table-small > tbody > tr > td,
+    .table-small > tfoot > tr > td {
+        padding: 4px;
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+
+    .table-small > thead > tr > th,
+    .table-small > tbody > tr > th,
+    .table-small > tfoot > tr > th {
+        width: 50%;
+    }
+
+    .table-small > thead > tr > td,
+    .table-small > tbody > tr > td,
+    .table-small > tfoot > tr > td {
+        width: 50%;
+    }
+</style>
+
+<div id="subscription-management-container">
+
+    <div ng-if="clientInfo.hasActiveSubscription() && !!clientInfo.subscription.email" style="width: 90%; margin: auto; margin-bottom: 30px">
+        <table id="subscription-info" class="table table-borderless table-striped table-small" style="margin-bottom: 10px">
+            <tr style="border-bottom: 1px solid lightgrey">
+                <th>Plan</th>
+                <td align="right" ng-bind="getPlanLabel()"></td>
+            </tr>
+            <tr style="border-bottom: 1px solid lightgrey">
+                <th>PayPal account</th>
+                <td align="right" ng-bind="clientInfo.subscription.email || '-'"></td>
+            </tr>
+            <tr style="border-bottom: 1px solid lightgrey">
+                <th>Recurring Payment ID</th>
+                <td align="right" ng-bind="clientInfo.subscription.id || '-'"></td>
+            </tr>
+            <tr style="border-bottom: 1px solid lightgrey">
+                <th>Created</th>
+                <td align="right" ng-bind="formatDate(clientInfo.subscription.created) || '-'"></td>
+            </tr>
+            <tr style="border-bottom: 1px solid lightgrey">
+                <th>Last Payment</th>
+                <td align="right" ng-bind="formatDate(clientInfo.subscription.lastPaymentDate) || '-'"></td>
+            </tr>
+            <tr style="border-bottom: 1px solid lightgrey">
+                <th>Next Payment</th>
+                <td align="right" ng-bind="formatDate(clientInfo.subscription.nextPaymentDate) || '-'"></td>
+            </tr>
+        </table>
+        <div class="clearfix">
+            <button ng-disabled='!clientInfo.subscription.nextPaymentDate' class="btn btn-danger pull-right" ng-click="cancelSubscription()">{{ 'CANCEL' | translate }}</button>
+            <div style="float: right; text-align: right; padding-right: 6px; max-width: 200px; color: darkgrey;">
+                <small ng-bind="getCancelInfoText()"></small>
+            </div>
+        </div>
+        <div ng-if="clientInfo.isEuCountry()" ng-include src="'fragment/billing-details.html'" style="margin-top: 40px"></div>
+    </div>
+
+    <div ng-if="clientInfo.subscription.type === 'stripe'" style="width: 90%; margin: auto; margin-bottom: 30px">
+        <table id="stripe-subscription-info" class="table table-borderless table-striped table-small" style="margin-bottom: 10px">
+            <tr style="border-bottom: 1px solid lightgrey">
+                <th>Plan</th>
+                <td align="right" ng-bind="getPlanLabel()"></td>
+            </tr>
+            <tr style="border-bottom: 1px solid lightgrey">
+                <th>Subscription Id</th>
+                <td align="right" ng-bind="clientInfo.subscription.id || '-'"></td>
+            </tr>
+            <tr style="border-bottom: 1px solid lightgrey">
+                <th>Created</th>
+                <td align="right" ng-bind="formatDate(clientInfo.subscription.created) || '-'"></td>
+            </tr>
+            <tr style="border-bottom: 1px solid lightgrey">
+                <th>Cycle</th>
+                <td align="right" class="capitalize" ng-bind="clientInfo.subscription.cycle || '-'"></td>
+            </tr>
+            <tr style="border-bottom: 1px solid lightgrey">
+                <th>Status</th>
+                <td align="right" class="capitalize" ng-bind="clientInfo.subscription.status || '-'"></td>
+            </tr>
+        </table>
+        <div class="clearfix">
+            <button type="button" class="btn btn-default pull-right" ng-click="createStripePortalSession()">{{ 'MANAGE_SUBSCRIPTION' | translate }}</button>
+            <div style="float: right; text-align: right; padding-right: 6px; max-width: 200px; color: darkgrey;">
+                <small ng-bind="getCancelInfoText()"></small>
+            </div>
+        </div>
+    </div>
+
+    <div ng-hide="!!subscriptionService.plan" class="ng-fade subscription-table-container">
+
+        <div ng-show="subscriptionService.getActiveSubscriptionPlanLevel() === 0 && !isAndroid()">
+            <div style="text-align: center; display: flex; align-items: center; justify-content: center;">
+                <div style="width: 60px" ng-style="{ 'font-weight': !subscriptionService.isCycleYear ? 'bold' : 'normal', 'color': !subscriptionService.isCycleYear ? '#90A4AE' : '#cecece' }">
+                    <span>Billed</span>
+                    <span>Monthly</span>
+                </div>
+                <label class="switch">
+                    <input ng-model="subscriptionService.isCycleYear" type="checkbox">
+                    <div class="slider round" style="background-color: #90A4AE"></div>
+                </label>
+                <div style="width: 60px" ng-style="{ 'font-weight': subscriptionService.isCycleYear ? 'bold' : 'normal', 'color': subscriptionService.isCycleYear ? '#90A4AE' : '#cecece' }">
+                    <span>Billed</span>
+                    <div>Yearly</div>
+                </div>
+            </div>
+            <div style="text-align: center; display: flex; align-items: center; justify-content: center;">
+                <small style="color: lightgrey; margin-top: 8px" ng-style="{ 'color': subscriptionService.isCycleYear ? '#90A4AE' : '#cecece' }">
+                    Save 10% with annual billing
+                </small>
+            </div>
+        </div>
+
+        <div style="margin-bottom: 25px"></div>
+
+        <table class="subscription-table">
+            <tr style="height: 26px">
+                <th class="features-header"></th>
+                <th class="plan-bold text-center free-cell plan-header" style="width:20%">{{ 'FREE' | translate }}</th>
+                <th class="plan-bold text-center silver-cell plan-header" style="width:20%">{{ 'SILVER' | translate }}</th>
+                <th class="plan-bold text-center gold-cell plan-header" style="width:20%">{{ 'GOLD' | translate }}</th>
+            </tr>
+            <tr>
+                <th class="plan-td-bold text-right" style="padding-right: 8px">{{ 'ALLOWED_CALCULATIONS' | translate }}</th>
+                <td class="plan-table-text text-center free-cell" align="center">{{configurationProperties.execThreshold1}}</br><small>{{ 'PER_DAY' | translate }}</small></td>
+                <td class="plan-table-text text-center silver-cell" align="center">{{ 'UNLIMITED' | translate }}</td>
+                <td class="plan-table-text text-center gold-cell" align="center">{{ 'UNLIMITED' | translate }}</td>
+            </tr>
+            <tr>
+                <th class="plan-td-bold text-right" style="padding-right: 8px">{{ 'CALCULATION_SPEED' | translate }}</th>
+                <td class="plan-table-text text-center free-cell" align="center" style="vertical-align: middle">{{ 'NORMAL' | translate }}</td>
+                <td class="plan-table-text text-center silver-cell" align="center" style="vertical-align: middle; padding: 2px">{{ 'NORMAL' | translate }}</td>
+                <td class="plan-table-text text-center gold-cell" align="center" style="vertical-align: middle; padding: 2px">{{ 'HIGH' | translate }}</td>
+            </tr>
+            <tr ng-if="!isAndroid()">
+                <th class="plan-td-bold text-right" style="padding-right: 8px">{{ 'SAVED_ITEMS' | translate }}</th>
+                <td class="plan-table-text text-center free-cell" align="center" ng-bind="configurationProperties.savedThreshold1"></td>
+                <td class="plan-table-text text-center silver-cell" align="center" ng-bind="configurationProperties.savedThreshold2"></td>
+                <td class="plan-table-text text-center gold-cell" align="center" ng-bind="configurationProperties.savedThreshold3"></td>
+            </tr>
+
+            <tr>
+                <th class="plan-td-bold text-right" style="padding-right: 8px">{{ 'SUPPORT_PRIORITY' | translate }}</th>
+                <td class="plan-table-text text-center free-cell cross-mark" align="center" style="vertical-align: middle">✗</td>
+                <td class="plan-table-text text-center silver-cell check-mark" align="center" style="vertical-align: middle; padding: 2px">✓</td>
+                <td class="plan-table-text text-center gold-cell check-mark" align="center" style="vertical-align: middle; padding: 2px">✓</td>
+            </tr>
+
+            <tr>
+                <th class="plan-td-bold text-right" style="padding-right: 8px">{{ 'PRO_FEATURES' | translate }}</th>
+                <td class="plan-table-text text-center free-cell cross-mark" align="center" style="vertical-align: middle">✗</td>
+                <td class="plan-table-text text-center silver-cell check-mark" align="center" style="vertical-align: middle; padding: 2px">✓</td>
+                <td class="plan-table-text text-center gold-cell check-mark" align="center" style="vertical-align: middle; padding: 2px">✓</td>
+            </tr>
+
+            <tr>
+                <th class="plan-td-bold text-right" style="padding-right: 8px">{{ 'ANDROID_PRO_VERSION' | translate }}</th>
+                <td class="plan-table-text text-center free-cell cross-mark" align="center" style="vertical-align: middle">✗</td>
+                <td class="plan-table-text text-center silver-cell check-mark" align="center" style="vertical-align: middle; padding: 2px">✓</td>
+                <td class="plan-table-text text-center gold-cell check-mark" align="center" style="vertical-align: middle; padding: 2px">✓</td>
+            </tr>
+
+            <tr ng-if="isAndroid()">
+                <th class="plan-td-bold text-right" style="padding-right: 8px">{{ 'NO_ADS' | translate }}</th>
+                <td class="plan-table-text text-center free-cell cross-mark" align="center" style="vertical-align: middle">✗</td>
+                <td class="plan-table-text text-center silver-cell check-mark" align="center" style="vertical-align: middle; padding: 2px">✓</td>
+                <td class="plan-table-text text-center gold-cell check-mark" align="center" style="vertical-align: middle; padding: 2px">✓</td>
+            </tr>
+
+            <tr ng-if="!isAndroid() && getPrice(1)">
+                <th class="plan-td-bold text-right" style="padding-right: 8px">{{ 'PRICE' | translate }}</th>
+                <td class="plan-table-text text-center free-cell" align="center">{{ 'FREE' | translate }}</td>
+                <td class="plan-table-text text-center silver-cell" align="center">
+                    <span ng-bind-html="getPrice(1) | to_trusted"></span>
+                    <br>
+                    <small>/ {{ 'MONTHLY' | translate }}</small></td>
+                <td class="plan-table-text text-center gold-cell" align="center">
+                    <span ng-bind-html="getPrice(2) | to_trusted"></span>
+                    <br>
+                    <small>/ {{ 'MONTHLY' | translate }}</small></td>
+            </tr>
+            <tr style="height: 48px">
+                <th style="vertical-align: middle"></th>
+                <td class="plan-table-text text-center" align="center"></td>
+                <td class="plan-table-text text-center" align="center">
+                    <div class="silver-cell" style="font-weight: bold; padding: 4px; border-radius: 10px" ng-show="subscriptionService.getActiveSubscriptionPlanLevel() === 2">{{ 'ACTIVE' | translate }}</div>
+                    <button ng-show="subscriptionService.getActiveSubscriptionPlanLevel() === 0" class="btn btn-subscribe" ng-click="onPlanChoice(2)">{{ 'SUBSCRIBE' | translate }}</button>
+                </td>
+                <td class="plan-table-text text-center" align="center">
+                    <div class="gold-cell" style="font-weight: bold; padding: 4px; border-radius: 10px" ng-show="subscriptionService.getActiveSubscriptionPlanLevel() === 3">Active</div>
+                    <button ng-show="subscriptionService.getActiveSubscriptionPlanLevel() === 0" class="btn btn-subscribe" ng-click="onPlanChoice(3)">{{ 'SUBSCRIBE' | translate }}</button>
+                </td>
+            </tr>
+        </table>
+    </div>
+</div>

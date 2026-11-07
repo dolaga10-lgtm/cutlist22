@@ -1,0 +1,73 @@
+<div class="modal fade" id="edgeModal" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="edgeModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title" id="edgeModalLabel">{{ 'EDGE_BANDING' | translate }}
+                    <small class="text-muted pull-right" ng-bind-html="dimensionProcessor.formatDimensionsHtml($parent.editEdgeTile) | to_trusted"></small>
+                        <span style="padding-right: 12px;">
+                            <span class="icon-stack" style="color: #777; font-size: 20px; top: 3px;">
+                               <i class="glyphicon icon-border-none icon-stack-1x"></i>
+                               <i ng-if="$parent.editEdgeTile.edge.top" class="glyphicon icon-border-top icon-stack-1x"></i>
+                               <i ng-if="$parent.editEdgeTile.edge.bottom" class="glyphicon icon-border-bottom icon-stack-1x"></i>
+                               <i ng-if="$parent.editEdgeTile.edge.left" class="glyphicon icon-border-left icon-stack-1x"></i>
+                               <i ng-if="$parent.editEdgeTile.edge.right" class="glyphicon icon-border-right icon-stack-1x"></i>
+                            </span>
+                            <span style="color: transparent !important" class="text-primary glyphicon glyphicon-menu-hamburger"></span>
+                        </span>
+                    </small>
+                </h3>
+            </div>
+            <div class="modal-body">
+                <div class="form-horizontal">
+                    <div class="form-group">
+                        <div class="col-xs-6">
+                            <label class="control-label" style="padding-top: 6px">{{ 'TOP_EDGE_BAND' | translate }}</label><br><small class="text-muted"> {{dimensionProcessor.formatDimension($parent.editEdgeTile.width, true)}}</small>
+                        </div>
+                        <div class="col-xs-6">
+                            <select class="form-control"
+                                    ng-options="option.id as option.label for option in edgeBandingList"
+                                    ng-model="$parent.editEdgeTile.edge.top">
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-xs-6">
+                            <label class="control-label" style="padding-top: 6px">{{ 'LEFT_EDGE_BAND' | translate }}</label><br><small class="text-muted"> {{dimensionProcessor.formatDimension($parent.editEdgeTile.height, true)}}</small>
+                        </div>
+                        <div class="col-xs-6">
+                            <select class="form-control"
+                                    ng-options="option.id as option.label for option in edgeBandingList"
+                                    ng-model="$parent.editEdgeTile.edge.left">
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-xs-6">
+                            <label class="control-label" style="padding-top: 6px">{{ 'BOTTOM_EDGE_BAND' | translate }}</label><br><small class="text-muted"> {{dimensionProcessor.formatDimension($parent.editEdgeTile.width, true)}}</small>
+                        </div>
+                        <div class="col-xs-6">
+                            <select class="form-control"
+                                    ng-options="option.id as option.label for option in edgeBandingList"
+                                    ng-model="$parent.editEdgeTile.edge.bottom">
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-xs-6">
+                            <label class="control-label" style="padding-top: 6px">{{ 'RIGHT_EDGE_BAND' | translate }}</label><br><small class="text-muted"> {{dimensionProcessor.formatDimension($parent.editEdgeTile.height, true)}}</small>
+                        </div>
+                        <div class="col-xs-6">
+                            <select class="form-control"
+                                    ng-options="option.id as option.label for option in edgeBandingList"
+                                    ng-model="$parent.editEdgeTile.edge.right">
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button style="width: 70px;" type="button" class="btn btn-primary" data-dismiss="modal" ng-click="onCloseEdgeModal()">Ok</button>
+            </div>
+        </div>
+    </div>
+</div>

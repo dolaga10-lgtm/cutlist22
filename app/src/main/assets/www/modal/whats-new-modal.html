@@ -1,0 +1,139 @@
+<style>
+    .whats-new-li:not(:last-child) {
+        margin-bottom: 10px;
+    }
+    .whats-new-header {
+        margin-bottom: 10px;
+        margin-top: 20px;
+        font-weight: bold;
+        padding-left: 25px;
+    }
+</style>
+<div class="modal fade" id="whatsNewModal" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="whatsNewModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h3 class="modal-title" id="whatsNewModalLabel">{{ 'WHATS_NEW' | translate }} <small>{{clientInfo.version}}</small></h3>
+            </div>
+            <div class="modal-body">
+                <div class="whats-new-header">1.11.3 <small style="font-weight: normal">2021-12-20</small></div>
+                <ul>
+                    <li class="whats-new-li">Improved algorithm for calculations with multiple materials</li>
+                </ul>
+                <div class="whats-new-header">1.11.2 <small style="font-weight: normal">2021-11-01</small></div>
+                <ul>
+                    <li class="whats-new-li">Improved algorithm</li>
+                    <li class="whats-new-li">Assigned colors to different material sheets on image diagram</li>
+                    <li class="whats-new-li">Highlight sheet on image diagram when hovering stock list</li>
+                </ul>
+<!--                <div class="whats-new-header">1.11.1</div>-->
+<!--                <ul>-->
+<!--                    <li class="whats-new-li">Fixed issues on PDF generation causing cropped information</li>-->
+<!--                    <li class="whats-new-li">Improvements on CSV loading</li>-->
+<!--                </ul>-->
+<!--                <div class="whats-new-header">1.11.0</div>-->
+<!--                <ul>-->
+<!--                    <li class="whats-new-li">Show all dimensions as length×width by default to match input table</li>-->
+<!--                    <li class="whats-new-li">Added option to switch dimension representation from length×width to width×length</li>-->
+<!--                </ul>-->
+<!--                <div class="whats-new-header">1.10.6</div>-->
+<!--                <ul>-->
+<!--                    <li class="whats-new-li">Fixed stock sheet area values on PDF stats</li>-->
+<!--                    <li class="whats-new-li">Improved diagram visualisation on thin panels</li>-->
+<!--                    <li class="whats-new-li">Added label and material information the the "unable to fit" list</li>-->
+<!--                    <li class="whats-new-li">Fixed issue causing some specific calculations to get stuck on initialization</li>-->
+<!--                </ul>-->
+<!--                <div class="whats-new-header">1.10.5</div>-->
+<!--                <ul>-->
+<!--                    <li class="whats-new-li">Fixed issue randomly causing some materials not appearing in calculation results</li>-->
+<!--                    <li class="whats-new-li">Optimization algorithm improvements</li>-->
+<!--                </ul>-->
+<!--                <div class="whats-new-header">1.10.4</div>-->
+<!--                <ul>-->
+<!--                    <li class="whats-new-li">Performance improvements</li>-->
+<!--                    <li class="whats-new-li">Fixed PDF header and footer for non-Latin script languages</li>-->
+<!--                </ul>-->
+<!--                <div class="whats-new-header">1.10.3</div>-->
+<!--                <ul>-->
+<!--                    <li class="whats-new-li">Added Bulgarian language</li>-->
+<!--                    <li class="whats-new-li">Added Dutch language</li>-->
+<!--                    <li class="whats-new-li">Increased maximum number of allowed panels per calculation</li>-->
+<!--                </ul>-->
+<!--                <div class="whats-new-header">1.10.2</div>-->
+<!--                <ul>-->
+<!--                    <li class="whats-new-li">Improved cut list table information</li>-->
+<!--                    <li class="whats-new-li">Bug fixes</li>-->
+<!--                </ul>-->
+<!--                <div class="whats-new-header">1.10.1</div>-->
+<!--                <ul>-->
+<!--                    <li class="whats-new-li">Bug fixes</li>-->
+<!--                    <li class="whats-new-li">User interface improvements</li>-->
+<!--                    <li class="whats-new-li">Treat all fractional dimensions using a 1/64 resolution to avoid issues caused by round-off errors</li>-->
+<!--                </ul>-->
+<!--                <div class="whats-new-header">1.10.0</div>-->
+<!--                <ul>-->
+<!--                    <li class="whats-new-li">Added option to stack panels with same cut layout on calculation results</li>-->
+<!--                    <li class="whats-new-li">Added option for specifying minimum allowed trim dimension</li>-->
+<!--                    <li class="whats-new-li">Added Japanese language</li>-->
+<!--                    <li class="whats-new-li">Fixed panel label inconsistencies on PDF</li>-->
+<!--                </ul>-->
+<!--                <div class="whats-new-header">1.9.1</div>-->
+<!--                <ul>-->
+<!--                    <li class="whats-new-li">Allow zero quantity on panel and stock sheet list</li>-->
+<!--                    <li class="whats-new-li">Fixed area percentages on PDF</li>-->
+<!--                </ul>-->
+<!--                <div class="whats-new-header">1.9.0</div>-->
+<!--                <ul>-->
+<!--                    <li class="whats-new-li">Added subscription management section</li>-->
+<!--                </ul>-->
+<!--                <div class="whats-new-header">1.8.1</div>-->
+<!--                <ul>-->
+<!--                    <li class="whats-new-li">Added French language</li>-->
+<!--                </ul>-->
+<!--                <div class="whats-new-header">1.8.0</div>-->
+<!--                <ul>-->
+<!--                    <li class="whats-new-li">Added option to allow defining cut orientation preference either along width or height</li>-->
+<!--                    <li class="whats-new-li">Improved edge banding visualization on diagram image</li>-->
+<!--                </ul>-->
+<!--                <div class="whats-new-header">1.7.1</div>-->
+<!--                <ul>-->
+<!--                    <li class="whats-new-li">Fixed cut thickness not assuming more that 2 decimal places on loading previous session data</li>-->
+<!--                    <li class="whats-new-li">Fixed issue causing saved projects not to include workspace data updated after last calculation</li>-->
+<!--                </ul>-->
+<!--                <div class="whats-new-header">1.7.0</div>-->
+<!--                <ul>-->
+<!--                    <li class="whats-new-li">Revamped project management</li>-->
+<!--                    <li class="whats-new-li">Fixed incorrect per sheet area data on PDF</li>-->
+<!--                </ul>-->
+<!--                <div class="whats-new-header">1.6.4</div>-->
+<!--                <ul>-->
+<!--                    <li class="whats-new-li">Improved optimization algorithm to reduce wasted area on calculations with various stock sheet sizes</li>-->
+<!--                </ul>-->
+<!--                <div class="whats-new-header">1.6.3</div>-->
+<!--                <ul>-->
+<!--                    <li class="whats-new-li">Fixed wrong decimal places issue on PDF</li>-->
+<!--                    <li class="whats-new-li">Minor fixes on project loading</li>-->
+<!--                </ul>-->
+<!--                <div class="whats-new-header">1.6.2</div>-->
+<!--                <ul>-->
+<!--                    <li class="whats-new-li">Fixed issue causing available stock sheets not being used even though required</li>-->
+<!--                    <li class="whats-new-li">Improved calculation speed</li>-->
+<!--                </ul>-->
+<!--                <div class="whats-new-header">1.6.1</div>-->
+<!--                <ul>-->
+<!--                    <li class="whats-new-li">Fixed PDF file download not assuming input name</li>-->
+<!--                </ul>-->
+<!--                <div class="whats-new-header">1.6.0</div>-->
+<!--                <ul>-->
+<!--                    <li class="whats-new-li">Improved one dimensional optimization calculations</li>-->
+<!--                    <li class="whats-new-li">PDF export improvements and customization options</li>-->
+<!--                    <li class="whats-new-li">Upgraded hosting server to a more powerful solution thanks to subscriptions</li>-->
+<!--                </ul>-->
+            </div>
+            <div class="modal-footer">
+                <button style="width: 70px;" type="button" class="btn btn-primary" data-dismiss="modal">Ok</button>
+            </div>
+        </div>
+    </div>
+</div>
