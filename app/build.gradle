@@ -1,0 +1,26 @@
+plugins {
+    id 'com.android.application'
+}
+
+android {
+    namespace 'com.mohamedadel.cutlist'
+    compileSdk 34
+
+    defaultConfig {
+        applicationId "com.mohamedadel.cutlist"
+        minSdk 24
+        targetSdk 34
+        versionCode 126
+        versionName "1.126"
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+
+}
+
+dependencies {
+    implementation 'androidx.webkit:webkit:1.11.0'
+}
